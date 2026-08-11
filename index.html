@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Yasmine</title>
+<!-- Polices premium de Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    background: radial-gradient(circle at 50% 50%, #fff0f5, #fce4ec, #f4c2d7);
+    height: 100vh;
+    overflow: hidden;
+    font-family: 'Montserrat', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #4a2c35;
+  }
+
+  /* ===== EFFET POUSSIÈRE MAGIQUE ===== */
+  #particles { position: absolute; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,215,235,0) 70%);
+    box-shadow: 0 0 10px rgba(255,255,255,0.5);
+    animation: floatUp linear infinite;
+    opacity: 0;
+  }
+  @keyframes floatUp {
+    0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+    20% { opacity: 0.8; }
+    80% { opacity: 0.8; }
+    100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+  }
+
+  /* ===== SCÈNES ===== */
+  .scene {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1), transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 10;
+  }
+  .scene.active {
+    opacity: 1;
+    visibility: visible;
+  }
+  #scene1 { transform: translateY(20px); }
+  #scene1.active { transform: translateY(0); }
+  
+  /* ===== GÂTEAU 3D PREMIUM ===== */
+  .cake-container {
+    position: relative;
+    width: 300px;
+    height: 400px;
+    z-index: 20;
+  }
+
+  .plate {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 320px;
+    height: 15px;
+    background: linear-gradient(to right, #e0e0e0, #ffffff, #e0e0e0);
+    border-radius: 50%;
+    box-shadow: 0 15px 25px rgba(0,0,0,0.15), 0 5px 10px rgba(0,0,0,0.05);
+  }
+
+  .layer {
+    position: absolute;
+    left: 50%;
+    border-radius: 12px;
+    transform: translateX(-50%) scale(0);
+    animation-fill-mode: forwards;
+    box-shadow: inset 0 10px 20px rgba(255,255,255,0.5), inset 0 -10px 20px rgba(0,0,0,0.1), 0 5px 15px rgba(0,0,0,0.1);
+  }
+  
+  .layer1 { bottom: 35px; width: 250px; height: 90px; background: linear-gradient(135deg, #f8c8d8, #f4a7c0); animation: popIn 1s 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+  .layer2 { bottom: 125px; width: 200px; height: 80px; background: linear-gradient(135deg, #fce4ec, #f8c8d8); animation: popIn 1s 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+  .layer3 { bottom: 205px; width: 140px; height: 70px; background: linear-gradient(135deg, #fff0f5, #fce4ec); animation: popIn 1s 1.9s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+
+  @keyframes popIn { to { transform: translateX(-50%) scale(1); } }
+
+  /* Bougie Premium */
+  .candle {
+    position: absolute;
+    bottom: 275px;
+    left: 50%;
+    transform: translateX(-50%) scaleY(0);
+    transform-origin: bottom;
+    width: 12px;
+    height: 50px;
+    background: repeating-linear-gradient(45deg, #fff, #fff 5px, #f4a7c0 5px, #f4a7c0 10px);
+    border-radius: 6px;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+    animation: candleUp 1s 2.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+  @keyframes candleUp { to { transform: translateX(-50%) scaleY(1); } }
+
+  /* Flamme Réaliste */
+  .flame {
+    position: absolute;
+    bottom: 330px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 18px;
+    height: 30px;
+    background: radial-gradient(ellipse at bottom, #fff 10%, #ffdf00 40%, #ff6600 80%, transparent 100%);
+    border-radius: 50% 50% 20% 20%;
+    opacity: 0;
+    filter: drop-shadow(0 0 10px #ffcc00) drop-shadow(0 0 20px #ff6600);
+    animation: flameOn 1s 3.5s forwards, flicker 0.15s 4.5s infinite alternate;
+    cursor: pointer;
+  }
+  @keyframes flameOn { to { opacity: 1; } }
+  @keyframes flicker {
+    0% { transform: translateX(-50%) scale(1) rotate(-1deg); }
+    100% { transform: translateX(-50%) scale(1.05) rotate(1deg); }
+  }
+
+  .flame.blown { animation: blowOut 0.8s forwards !important; }
+  @keyframes blowOut {
+    0% { opacity: 1; transform: translateX(-50%) scale(1); }
+    50% { opacity: 0.5; transform: translateX(-100%) scale(0.5) rotate(45deg); filter: grayscale(1); }
+    100% { opacity: 0; transform: translateX(-150%) scale(0) rotate(90deg); }
+  }
+
+  /* Fumée élégante */
+  .smoke {
+    position: absolute;
+    bottom: 330px;
+    left: 50%;
+    width: 8px;
+    height: 8px;
+    background: rgba(200, 200, 200, 0.8);
+    border-radius: 50%;
+    opacity: 0;
+    filter: blur(3px);
+  }
+  .smoke.show { animation: smokeUp 2.5s ease-out forwards; }
+  @keyframes smokeUp {
+    0% { opacity: 0.8; transform: translate(-50%, 0) scale(1); }
+    100% { opacity: 0; transform: translate(-50%, -200px) scale(6); }
+  }
+
+  .instruction {
+    position: absolute;
+    bottom: -80px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #a87b8d;
+    font-size: 16px;
+    font-style: italic;
+    letter-spacing: 2px;
+    opacity: 0;
+    animation: fadeInPulse 2s 4.5s infinite alternate;
+    white-space: nowrap;
+  }
+  @keyframes fadeInPulse {
+    0% { opacity: 0.3; }
+    100% { opacity: 1; text-shadow: 0 0 10px rgba(255,255,255,0.8); }
+  }
+
+  /* ===== SCÈNE 2 : DESIGN GLASSMORPHISM ===== */
+  #scene2 {
+    padding: 30px;
+  }
+  
+  .glass-card {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 30px;
+    padding: 40px;
+    max-width: 1000px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.05), inset 0 0 0 1px rgba(255,255,255,0.5);
+    transform: scale(0.9) translateY(30px);
+    opacity: 0;
+    transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  #scene2.active .glass-card {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+    transition-delay: 0.5s;
+  }
+
+  /* Cadre Photo Premium */
+  .frame {
+    flex-shrink: 0;
+    padding: 15px;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(200, 150, 170, 0.3);
+    transform: rotate(-3deg);
+    transition: transform 0.5s ease;
+  }
+  .frame:hover {
+    transform: rotate(0deg) scale(1.02);
+  }
+  .frame img {
+    width: 420px;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 12px;
+    display: block;
+  }
+  .frame-placeholder {
+    width: 320px;
+    height: 400px;
+    background: #fdfbfb;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #e8b4b8;
+    font-size: 50px;
+    border: 1px dashed #e8b4b8;
+  }
+
+  /* Typographie Premium */
+  .text-side {
+    max-width: 500px;
+  }
+  
+  .title {
+    font-family: 'Playfair Display', serif;
+    font-size: 52px;
+    font-weight: 700;
+    line-height: 1.1;
+    background: linear-gradient(135deg, #b56576, #e5989b, #b56576);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 25px;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: all 1s ease 1s;
+  }
+  #scene2.active .title {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .typing-container {
+    position: relative;
+  }
+
+  .typing {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    line-height: 1.9;
+    color: #5a3a45;
+    height: 350px;
+    overflow-y: auto;
+    padding-right: 15px;
+    white-space: pre-wrap;
+    font-weight: 400;
+  }
+  
+  /* Scrollbar élégante */
+  .typing::-webkit-scrollbar { width: 4px; }
+  .typing::-webkit-scrollbar-track { background: rgba(255,255,255,0.3); border-radius: 10px; }
+  .typing::-webkit-scrollbar-thumb { background: #e5989b; border-radius: 10px; }
+
+  /* Curseur d'écriture */
+  .cursor {
+    display: inline-block;
+    width: 2px;
+    height: 18px;
+    background-color: #b56576;
+    animation: blink 0.8s infinite;
+    vertical-align: middle;
+    margin-left: 2px;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  @media (max-width: 900px) {
+    .glass-card { flex-direction: column; text-align: center; padding: 30px; height: 90vh; overflow-y: auto;}
+    .frame { transform: rotate(0); }
+    .title { font-size: 40px; }
+    .typing { height: auto; text-align: left; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Particules magiques d'arrière-plan -->
+<div id="particles"></div>
+
+<!-- SCÈNE 1 : Gâteau -->
+<div class="scene active" id="scene1">
+  <div class="cake-container">
+    <div class="plate"></div>
+    <div class="layer layer1"></div>
+    <div class="layer layer2"></div>
+    <div class="layer layer3"></div>
+    <div class="candle"></div>
+    <div class="flame" id="flame" onclick="blowCandle()"></div>
+    <div class="smoke" id="smoke"></div>
+    <div class="instruction" id="instruction">Make a wish and blow the candle... 🌬️</div>
+  </div>
+</div>
+
+<!-- SCÈNE 2 : Photo + texte (Glassmorphism) -->
+<div class="scene" id="scene2">
+  <div class="glass-card">
+    <div class="frame">
+      <!-- Mets ton image ici "photo.jpg" -->
+      <img src="image.png" alt="Yasmine & Me" onerror="this.outerHTML='<div class=\'frame-placeholder\'>📸<br>Add photo.jpg</div>'">
+    </div>
+    <div class="text-side">
+      <div class="title">Happy Birthday Yasmine</div>
+      <div class="typing-container">
+        <span class="typing" id="typing"></span><span class="cursor" id="cursor"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // --- GENERATION DES PARTICULES MAGIQUES ---
+  const particlesContainer = document.getElementById('particles');
+  function createParticle() {
+    const p = document.createElement('div');
+    p.classList.add('particle');
+    const size = Math.random() * 8 + 4; // Taille entre 4px et 12px
+    p.style.width = `${size}px`;
+    p.style.height = `${size}px`;
+    p.style.left = `${Math.random() * 100}vw`;
+    p.style.animationDuration = `${Math.random() * 5 + 5}s`;
+    p.style.animationDelay = `${Math.random() * 2}s`;
+    particlesContainer.appendChild(p);
+    setTimeout(() => p.remove(), 10000);
+  }
+  // Créer des particules en continu
+  setInterval(createParticle, 300);
+
+  // --- LOGIQUE DU GATEAU ET DU SOUFFLE ---
+  const flame = document.getElementById('flame');
+  const smoke = document.getElementById('smoke');
+  const scene1 = document.getElementById('scene1');
+  const scene2 = document.getElementById('scene2');
+  const instruction = document.getElementById('instruction');
+  let blown = false;
+
+  function blowCandle() {
+    if (blown) return;
+    blown = true;
+    flame.classList.add('blown');
+    smoke.classList.add('show');
+    instruction.style.opacity = '0';
+    instruction.style.animation = 'none';
+
+    // Transition cinématique entre les scènes
+    setTimeout(() => {
+      scene1.classList.remove('active');
+      setTimeout(() => {
+        scene1.style.display = 'none'; // Retirer du DOM visuel
+        scene2.classList.add('active');
+        setTimeout(startTyping, 1200); // Attendre que la carte apparaisse avant d'écrire
+      }, 1000);
+    }, 1800);
+  }
+
+  // Permet de souffler en cliquant n'importe où une fois l'animation finie
+  setTimeout(() => {
+    document.addEventListener('click', () => {
+      if (scene1.classList.contains('active')) blowCandle();
+    });
+  }, 4000);
+
+  // Détection du micro (Optionnel mais stylé)
+  navigator.mediaDevices?.getUserMedia({ audio: true }).then(stream => {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const src = ctx.createMediaStreamSource(stream);
+    const analyser = ctx.createAnalyser();
+    analyser.fftSize = 512;
+    src.connect(analyser);
+    const data = new Uint8Array(analyser.frequencyBinCount);
+    function check() {
+      analyser.getByteFrequencyData(data);
+      const avg = data.reduce((a,b)=>a+b,0)/data.length;
+      // Sensibilité ajustée
+      if (avg > 45 && !blown) blowCandle();
+      requestAnimationFrame(check);
+    }
+    check();
+  }).catch(()=> console.log("Microphone access denied, using click instead."));
+
+  // --- ANIMATION D'ECRITURE ---
+  const message = `Happy birthday, Yasmine ❤️🎂
+
+It’s crazy to think that tomorrow we’re celebrating your birthday, and that it’s already been 2 years since you came into my life. Two years may not sound like a lot, but when I think about everything we’ve been through together, it feels like we’ve known each other for so much longer.
+
+We’ve laughed until we couldn’t breathe, cried together, shared so many adventures, talked about everything and nothing, supported each other through difficult moments, and created so many memories that I’ll always keep in my heart. 🥹❤️
+
+There were good days, bad days, stupid moments, crazy moments, moments when we didn’t even know what we were doing 😂… but somehow, we always had each other. And honestly, that’s what makes our friendship so special to me.
+
+I’m really grateful for every memory, every laugh, every conversation, every adventure, and even every difficult moment we went through together. You became someone really important to me, and I hope you know how much you mean to me.
+
+I hope this new year of your life brings you happiness, peace, success, love, and everything you deserve. I hope you achieve all the things you dream about and that we continue making memories together, because I’m definitely not done annoying you yet 😂❤️
+
+Happy birthday to one of the most special people I’ve met.
+Thank you for being part of my life for these beautiful 2 years.
+
+Here’s to many more adventures, laughs, tears, crazy memories and unforgettable moments together. 🥂❤️
+
+Happy birthday, Yasmine. I love you and I’m so lucky to have you in my life. 🫶🏻🎂❤️`;
+
+  function startTyping() {
+    const el = document.getElementById('typing');
+    const cursor = document.getElementById('cursor');
+    const chars = [...message]; 
+    let i = 0;
+    
+    // Vitesse variable pour un effet plus "humain"
+    function typeChar() {
+      if (i < chars.length) {
+        el.innerHTML += chars[i] === '\n' ? '<br>' : chars[i];
+        
+        // Scroll automatique très doux
+        el.scrollTo({
+          top: el.scrollHeight,
+          behavior: 'smooth'
+        });
+        
+        i++;
+        // Si c'est un point ou une virgule, on fait une mini pause
+        let delay = 35; 
+        if(chars[i-1] === '.' || chars[i-1] === '\n') delay = 400;
+        else if(chars[i-1] === ',') delay = 150;
+        
+        setTimeout(typeChar, delay);
+      } else {
+        // Fin de l'écriture
+        cursor.style.display = 'none';
+      }
+    }
+    typeChar();
+  }
+</script>
+
+</body>
+</html>
